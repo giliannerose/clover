@@ -1,8 +1,14 @@
+
+package ui;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import services.AuthService;
+import services.User;
+import services.UserRepository;
 
 public class LoginGUI extends Application {
 
@@ -65,10 +71,18 @@ public class LoginGUI extends Application {
                 boolean success = AuthService.verifyPassword(password, user.getPassword());
                 if (success) {
                     resultLabel.setText("✅ Welcome, " + user.getUsername() + " (" + user.getRole() + ")");
+
+                    // Close login window
+                    Stage stage = (Stage) loginButton.getScene().getWindow();
+                    stage.close();
+
+                    // Launch dashboard
+                    DashboardGUI.show(user.getUsername(), user.getRole());
                 } else {
                     resultLabel.setText("❌ Incorrect email or password.");
                 }
             }
+
         });
 
         // Scene
@@ -79,5 +93,11 @@ public class LoginGUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static void show() {
+        LoginGUI app = new LoginGUI();
+        Stage stage = new Stage();
+        app.start(stage);
     }
 }

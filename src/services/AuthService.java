@@ -1,3 +1,6 @@
+
+package services;
+
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class AuthService {

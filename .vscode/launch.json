@@ -3,6 +3,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "InsertSampleUsers",
+      "request": "launch",
+      "mainClass": "InsertSampleUsers",
+      "projectName": "FinmarkApp_9f7f8cc6"
+    },
+    {
+      "type": "java",
       "name": "LoginGUI",
       "request": "launch",
       "mainClass": "LoginGUI",
