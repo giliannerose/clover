@@ -35,26 +35,44 @@ public class LoginGUI extends Application {
 
         // Button logic
         loginButton.setOnAction(e -> {
-            String email = userField.getText();
+            String email = userField.getText().trim();
             String password = passField.getText();
+
+            // Validation: empty input
+            if (email.isEmpty() && password.isEmpty()) {
+                resultLabel.setText("❌ Email and password are required.");
+                return;
+            } else if (email.isEmpty()) {
+                resultLabel.setText("❌ Email is required.");
+                return;
+            } else if (password.isEmpty()) {
+                resultLabel.setText("❌ Password is required.");
+                return;
+            }
+
+            // Validation: simple email format
+            if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+                resultLabel.setText("❌ Invalid email format.");
+                return;
+            }
 
             UserRepository repo = new UserRepository();
             User user = repo.getUserByEmail(email);
 
             if (user == null) {
-                resultLabel.setText(" User not found.");
+                resultLabel.setText("❌ Incorrect email or password.");
             } else {
                 boolean success = AuthService.verifyPassword(password, user.getPassword());
                 if (success) {
-                    resultLabel.setText(" Welcome, " + user.getUsername() + " (" + user.getRole() + ")");
+                    resultLabel.setText("✅ Welcome, " + user.getUsername() + " (" + user.getRole() + ")");
                 } else {
-                    resultLabel.setText("Incorrect password.");
+                    resultLabel.setText("❌ Incorrect email or password.");
                 }
             }
         });
 
         // Scene
-        Scene scene = new Scene(grid, 300, 200);
+        Scene scene = new Scene(grid, 350, 200);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -62,5 +80,4 @@ public class LoginGUI extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
